@@ -1,0 +1,20 @@
+# Framework principal e servidor ASGI
+fastapi==0.116.1
+uvicorn==0.35.0
+
+# ORM e Migrações
+SQLAlchemy==2.0.43
+alembic==1.17.2
+
+# Drivers de Banco de Dados (PostgreSQL Assíncrono)
+asyncpg==0.31.0
+
+# Validação de Dados, Settings e Tipagem
+pydantic==2.11.7
+pydantic-settings==2.12.0
+python-dotenv==1.2.1
+typing_extensions==4.14.1
+
+# Dependências ASGI e Assíncronas
+anyio==4.10.0
+starlette==0.47.2
