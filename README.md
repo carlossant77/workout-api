@@ -1,17 +1,115 @@
-🏋️ Workout API Challenge (Desafio API de Treino)Bem-vindo ao repositório do projeto Workout API, uma API assíncrona desenvolvida com FastAPI e SQLAlchemy, focada no registro e gerenciamento de atletas, categorias e centros de treinamento.🚀 ComeçandoSiga estas etapas para configurar e rodar a aplicação localmente usando Docker Compose.Pré-requisitosCertifique-se de ter instalado:Docker e Docker ComposePython 3.11+ (para gerenciamento local, se necessário)⚙️ Instalação (Com Docker)Clone o Repositório:Bashgit clone https://docs.github.com/pt/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github
-cd desafio-1
-Inicie os Contêineres:Este comando irá construir a imagem da aplicação (Python/FastAPI) e iniciar o contêiner do banco de dados (PostgreSQL).Bashdocker-compose up --build -d
-Verifique o Status:Confirme se os serviços api e db estão rodando:Bashdocker-compose ps
-# Deve mostrar 'Up' para ambos os serviços.
-🧭 Rotas da API (Endpoints)A API estará acessível em http://localhost:8000.1. Documentação Interativa (Swagger UI) 📖Acesse a documentação automática para testar todas as rotas e ver os schemas de dados:➡️ URL: http://localhost:8000/docs2. Rotas PrincipaisMétodoCaminhoDescriçãoStatus de SucessoPOST/categorias/Cria uma nova categoria de atleta.201 CreatedGET/categorias/Lista todas as categorias.200 OKPOST/atletas/Cadastra um novo atleta.201 CreatedGET/atletas/Consulta atletas (suporta filtros nome e cpf).200 OKGET/atletas/{id}Consulta atleta por ID (UUID).200 OKPATCH/atletas/{id}Atualiza dados de um atleta.200 OK🛠️ Estrutura do Projeto e TecnologiasEste projeto segue uma estrutura modular, com separação de responsabilidades (MVC parcial) e utiliza as seguintes tecnologias:Dependências CoreO projeto se baseia na seguinte stack:DependênciaVersão ChavePropósitoFastAPI0.116.1Desenvolvimento rápido da API assíncrona.SQLAlchemy2.0.43ORM Assíncrono para interação com o DB.Alembic1.17.2Ferramenta de migração de banco de dados.asyncpg0.31.0Driver assíncrono para PostgreSQL.fastapi-pagination0.12.0Paginação automática de resultados (?page=&size=).uvicorn0.35.0Servidor ASGI de alta performance.Layout de Pastas 📂A estrutura do código é organizada da seguinte forma:├── desafio-1/
-│   ├── alembic/              # 🗃️ Configuração e versões de Migração do DB
-│   ├── workout_api/          # 🎯 Código Fonte da Aplicação
-│   │   ├── atleta/          # Módulo Atleta (Controller, Models, Schemas)
-│   │   ├── categorias/       # Módulo Categoria (Controller, Models, Schemas)
-│   │   ├── centro_treinamento/ # Módulo Centro de Treinamento
-│   │   ├── configs/          # Configurações de DB, Settings e JWT (se houver)
-│   │   ├── contrib/          # Arquivos e Módulos Comuns (BaseModel, Dependências)
-│   │   └── main.py           # Ponto de Entrada da Aplicação
-│   ├── docker-compose.yml    # 🐳 Definição dos Serviços (API + DB)
-│   └── Makefile              # 🔨 Comandos de Desenvolvimento (Ex: 'make run', 'make test')
-🐛 Contribuição e Relatório de BugsEncontrou um erro (ex: null value violates not-null constraint)?Abra uma Issue detalhando o passo a passo para reprodução.Para contribuir, faça um Fork do projeto e envie um Pull Request.🤝 Desenvolvido com carinho!
+# 🏋️ Workout API Challenge: Gestão de Atletas
+
+<p align="center">
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+</p>
+
+## 🌟 Visão Geral
+
+Este projeto é uma **API Assíncrona** de alta performance para gerenciamento de dados de treino e atletas. Desenvolvida com **FastAPI** e utilizando **SQLAlchemy 2.0** para persistência de dados em um banco **PostgreSQL**, a aplicação garante integridade de dados e consultas rápidas.
+
+---
+
+## 🚀 Guia de Início Rápido (Quick Start)
+
+A maneira mais fácil de rodar a API é utilizando o Docker Compose, que gerencia tanto a aplicação FastAPI quanto o contêiner do banco de dados.
+
+### 📋 Pré-requisitos
+
+Certifique-se de que você tem instalado:
+* **Docker** e **Docker Compose**
+* **Git**
+
+### 🐳 Rodando com Docker Compose
+
+1.  **Clone o Repositório:**
+    ```bash
+    git clone [URL_DO_SEU_REPOSITORIO]
+    cd desafio-1
+    ```
+
+2.  **Inicie os Serviços:**
+    Este comando irá construir a imagem da API, configurar o PostgreSQL e subir ambos os contêineres em segundo plano.
+    ```bash
+    docker-compose up --build -d
+    ```
+
+3.  **Verifique o Status:**
+    Confirme se tudo está rodando corretamente:
+    ```bash
+    docker-compose ps
+    # STATUS: api e db devem estar como "Up"
+    ```
+    ✅ A API estará disponível em `http://localhost:8000`.
+
+---
+
+## 🌐 Rotas e Documentação Interativa
+
+Todas as rotas da API estão documentadas e prontas para teste através da interface Swagger UI.
+
+| Link | Descrição |
+| :--- | :--- |
+| **Swagger UI (Recomendado)** | A documentação interativa para testar as rotas. |
+| `http://localhost:8000/docs` | `http://localhost:8000/docs` |
+| **Redoc** | Uma alternativa mais simples para visualização. |
+| `http://localhost:8000/redoc` | `http://localhost:8000/redoc` |
+
+### 🎯 Rotas Principais (Exemplos)
+
+| Método | Caminho | Resumo |
+| :--- | :--- | :--- |
+| **POST** | `/categorias/` | ➕ Cria uma nova Categoria (Ex: Scale). |
+| **POST** | `/atletas/` | 👤 Cadastra um novo Atleta. |
+| **GET** | `/atletas/` | 🔍 Consulta todos os atletas com suporte a **Paginação** e **Filtros** (`?page=1&size=10`). |
+| **PATCH** | `/atletas/{id}` | 📝 Edita dados de um atleta específico. |
+
+---
+
+## 🧩 Stack Tecnológico
+
+As principais ferramentas e bibliotecas utilizadas neste projeto, com foco em performance e assincronicidade:
+
+| Categoria | Pacote | Propósito |
+| :--- | :--- | :--- |
+| **API Web** | `FastAPI`, `Starlette` | Alto desempenho e facilidade de uso. |
+| **DB ORM** | `SQLAlchemy 2.0` | ORM robusto e com suporte assíncrono. |
+| **DB Driver** | `asyncpg` | Driver assíncrono para PostgreSQL. |
+| **Migrações** | `Alembic` | Gerenciamento de schema do banco de dados. |
+| **Recursos** | `fastapi-pagination` | Paginação automática em endpoints GET. |
+| **Ambiente** | `Docker`, `python-dotenv` | Contêineres e variáveis de ambiente. |
+
+### Estrutura Modular 🧱
+
+O projeto utiliza uma arquitetura modular, onde cada entidade (atleta, categoria, CT) possui seus próprios:
+
+* **`models.py`**: Definições das tabelas do SQLAlchemy.
+* **`schemas.py`**: Modelos de entrada/saída (Pydantic) para validação de dados.
+* **`controller.py`**: Lógica de *endpoints* (rotas) e interação com o DB.
+
+---
+
+## ⚠️ Solução de Problemas Comuns
+
+| Erro Comum | Causa no Projeto | Solução Rápida |
+| :--- | :--- | :--- |
+| `422 Unprocessable Content` | JSON Body malformado ou `Content-Type` ausente no cliente (ex: Postman). | Certifique-se de usar `raw` e selecionar **`JSON`** no Postman e enviar o cabeçalho `Content-Type: application/json`. |
+| `500 null value violates not-null constraint` | Erro durante o `db_session.commit()`: um campo obrigatório (ex: `categoria_id`) não foi preenchido. | O objeto `categoria` ou `centro_treinamento` provavelmente não foi encontrado ou não tem a propriedade `pk_id` no momento da inserção. Verifique a **existência** prévia dos dados no DB. |
+| `Lentidão em GET /atletas` | **Bug Estrutural:** A rota está executando consultas desnecessárias ao DB (Problema N+1 ou consultas sequenciais). | Refatore a função `query` para **construir a query dinamicamente** e usar `paginate` no DB, executando a consulta apenas uma vez. |
+
+---
+
+## ✨ Contribuição
+
+Sinta-se à vontade para contribuir!
+
+1.  Faça um **Fork** do projeto.
+2.  Crie uma nova *branch* (`git checkout -b feature/sua-feature`).
+3.  Faça suas alterações e *commit* (`git commit -m 'feat: Adiciona nova funcionalidade X'`).
+4.  Envie para a *branch* original (`git push origin feature/sua-feature`).
+5.  Abra um **Pull Request**.
+
+💖 Obrigado por checar o projeto!
