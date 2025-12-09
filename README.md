@@ -27,8 +27,8 @@ Certifique-se de que você tem instalado:
 
 1.  **Clone o Repositório:**
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
-    cd desafio-1
+    git clone [(https://github.com/carlossant77/workout-api)]
+    cd workoutAPI
     ```
 
 2.  **Inicie os Serviços:**
